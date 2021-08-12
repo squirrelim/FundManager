@@ -12,7 +12,6 @@ import java.util.Objects;
 
 @Entity
 @Table
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "fundId")
 public class Fund {
 
     @Id
@@ -29,11 +28,9 @@ public class Fund {
      */
     @ManyToOne(optional = false)
     @JoinColumn(name = "employee_id")
-    @JsonIdentityReference(alwaysAsId = true)
     private FundManager manager;
 
     @OneToMany(mappedBy = "fund", cascade = CascadeType.ALL)
-    @JsonIdentityReference(alwaysAsId = true)
     private List<Position> positions;
 
     public Fund() {

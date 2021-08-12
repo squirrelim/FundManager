@@ -8,6 +8,7 @@ import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.entity.FundManager;
 import com.example.fundmanager.entity.Position;
 import com.example.fundmanager.entity.Security;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,11 @@ public class FundmanagerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(FundmanagerApplication.class, args);
+    }
+
+    @Bean
+    ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
     @Bean

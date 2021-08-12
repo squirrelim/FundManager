@@ -2,6 +2,8 @@ package com.example.fundmanager.service;
 
 import com.example.fundmanager.dao.FundRepository;
 import com.example.fundmanager.entity.Fund;
+import com.example.fundmanager.entity.FundManager;
+import com.example.fundmanager.entity.Position;
 import com.example.fundmanager.exception.FundAlreadyInUseException;
 import com.example.fundmanager.exception.FundIdNotMatchingException;
 import com.example.fundmanager.exception.FundNotFoundException;
@@ -11,17 +13,21 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FundService {
 
     private final FundRepository fundRepository;
+    private final FundManagerService fundManagerService;
+    private final PositionService positionService;
 
     @Autowired
-    public FundService(FundRepository fundRepository) {
+    public FundService(FundRepository fundRepository, FundManagerService fundManagerService, PositionService positionService) {
         this.fundRepository = fundRepository;
+        this.fundManagerService = fundManagerService;
+        this.positionService = positionService;
     }
 
     public List<Fund> getFunds() {
@@ -50,6 +56,18 @@ public class FundService {
             throw new FundAlreadyInUseException(fund);
         }
 
+        // Get real manager references.
+        FundManager manager = fundManagerService.getManager(fund.getManager().getEmployeeId());
+
+        // Get real position references.
+        List<Position> positions = fund
+                .getPositions()
+                .stream()
+                .map(p -> positionService.getPosition(p.getPositionId()))
+                .collect(Collectors.toList());
+
+        fund.setManager(manager);
+        fund.setPositions(positions);
         fundRepository.save(fund);
     }
 
