@@ -13,5 +13,5 @@ public interface FundManagerRepository extends JpaRepository<FundManager, Long> 
     Optional<FundManager> findFundManagerByEmployeeId(Long id);
 
     @Query("SELECT m FROM FundManager m WHERE m.firstName=?1 AND m.lastName=?2")
-    Optional<FundManager> findFundManager(String firstName, String lastName);
+    Optional<FundManager> findFundManagerByName(String firstName, String lastName);
 }

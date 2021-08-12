@@ -46,8 +46,9 @@ public class FundManagerService {
     }
 
     public void addManager(FundManager manager) {
-        Optional<FundManager> existingManager = fundManagerRepository.findFundManager(manager.getFirstName(), manager.getLastName());
-        if(existingManager.isPresent()){
+        Optional<FundManager> managerByName = fundManagerRepository.findFundManagerByName(manager.getFirstName(), manager.getLastName());
+        Optional<FundManager> managerByEmployeeId = fundManagerRepository.findFundManagerByEmployeeId(manager.getEmployeeId());
+        if(managerByName.isPresent() || managerByEmployeeId.isPresent()){
             throw new ManagerAlreadyInUseException(manager);
         }
         for(Fund fund: manager.getFunds()){
@@ -72,7 +73,7 @@ public class FundManagerService {
 
         if(updatedManager.getFirstName() != null && updatedManager.getFirstName().length()>0 &&
                 updatedManager.getLastName() != null && updatedManager.getLastName().length()>0){
-            Optional<FundManager> managerCheck = fundManagerRepository.findFundManager(
+            Optional<FundManager> managerCheck = fundManagerRepository.findFundManagerByName(
                     updatedManager.getFirstName(),
                     updatedManager.getLastName());
             if(managerCheck.isPresent()){
