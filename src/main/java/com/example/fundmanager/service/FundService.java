@@ -5,6 +5,7 @@ import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.exception.FundAlreadyInUseException;
 import com.example.fundmanager.exception.FundIdNotMatchingException;
 import com.example.fundmanager.exception.FundNotFoundException;
+import com.example.fundmanager.exception.IllegalUpdatedFundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,9 @@ public class FundService {
 
     @Transactional
     public void updateFund(Long id, Fund updatedFund){
-//        if(updatedFund.getFundId() == null || updatedFund.getName() == null || )
+        if(updatedFund.getFundId() == null || updatedFund.getName() == null){
+            throw new IllegalUpdatedFundException(updatedFund);
+        }
 
         Optional<Fund> fundOptional = fundRepository.findById(id);
         if(fundOptional.isEmpty()){

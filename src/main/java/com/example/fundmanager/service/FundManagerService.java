@@ -3,10 +3,7 @@ package com.example.fundmanager.service;
 import com.example.fundmanager.dao.FundManagerRepository;
 import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.entity.FundManager;
-import com.example.fundmanager.exception.FundNotFoundException;
-import com.example.fundmanager.exception.ManagerAlreadyInUseException;
-import com.example.fundmanager.exception.ManagerIdNotMatchingException;
-import com.example.fundmanager.exception.ManagerNotFoundException;
+import com.example.fundmanager.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +55,10 @@ public class FundManagerService {
 
     @Transactional
     public void updateManager(Long id, FundManager updatedManager) {
+        if(updatedManager.getEmployeeId() == null || updatedManager.getFirstName() == null || updatedManager.getLastName() == null){
+            throw new IllegalUpdatedFundManagerException(updatedManager);
+        }
+
         Optional<FundManager> fundManagerOptional = fundManagerRepository.findById(id);
         if(fundManagerOptional.isEmpty()){
             throw new ManagerNotFoundException(id);
