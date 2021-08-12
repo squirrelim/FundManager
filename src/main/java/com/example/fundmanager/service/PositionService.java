@@ -45,9 +45,8 @@ public class PositionService {
                 position.getSecurityId(),
                 position.getQuantity(),
                 position.getDatePurchased());
-        Optional<Position> positionsByPositionId = positionRepository.findPositionsByPositionId(position.getPositionId());
 
-        if(existingPosition.isPresent() || positionsByPositionId.isPresent()){
+        if(existingPosition.isPresent()){
             throw new PositionAlreadyInUseException(position);
         }
 

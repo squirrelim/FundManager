@@ -45,8 +45,7 @@ public class FundService {
 
     public void addFund(Fund fund){
         Optional<Fund> fundByName = fundRepository.findFundByName(fund.getName());
-        Optional<Fund> fundByFundId = fundRepository.findFundByFundId(fund.getFundId());
-        if(fundByName.isPresent() || fundByFundId.isPresent()){
+        if(fundByName.isPresent()){
             throw new FundAlreadyInUseException(fund);
         }
 

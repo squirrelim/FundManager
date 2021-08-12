@@ -43,8 +43,7 @@ public class SecurityService {
 
     public void addSecurity(Security security){
         Optional<Security> securityBySymbol = securityRepository.findSecurityBySymbol(security.getSymbol());
-        Optional<Security> securityBySecurityId = securityRepository.findSecurityBySecurityId(security.getSecurityId());
-        if(securityBySymbol.isPresent() || securityBySecurityId.isPresent()){
+        if(securityBySymbol.isPresent()){
             throw new SecurityAlreadyInUseException(security);
         }
         securityRepository.save(security);

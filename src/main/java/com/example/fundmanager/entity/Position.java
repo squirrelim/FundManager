@@ -1,6 +1,7 @@
 package com.example.fundmanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -31,6 +32,11 @@ public class Position {
     @Column(nullable = false)
     private LocalDate datePurchased;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fund")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Fund fund;
+
     /**
      * A position is a combination of a security, a quantity and a date
      */
@@ -38,17 +44,19 @@ public class Position {
     public Position() {
     }
 
-    public Position(Long securityId, Long quantity, LocalDate datePurchased) {
+    public Position(Long securityId, Long quantity, LocalDate datePurchased, Fund fund) {
         this.securityId = securityId;
         this.quantity = quantity;
         this.datePurchased = datePurchased;
+        this.fund = fund;
     }
 
-    public Position(Long positionId, Long securityId, Long quantity, LocalDate datePurchased) {
+    public Position(Long positionId, Long securityId, Long quantity, LocalDate datePurchased, Fund fund) {
         this.positionId = positionId;
         this.securityId = securityId;
         this.quantity = quantity;
         this.datePurchased = datePurchased;
+        this.fund = fund;
     }
 
     public Long getPositionId() {
@@ -83,6 +91,14 @@ public class Position {
         this.datePurchased = datePurchased;
     }
 
+    public Fund getFund() {
+        return fund;
+    }
+
+    public void setFund(Fund fund) {
+        this.fund = fund;
+    }
+
     @Override
     public String toString() {
         return "Position{" +
@@ -90,6 +106,7 @@ public class Position {
                 ", securityId=" + securityId +
                 ", quantity=" + quantity +
                 ", datePurchased=" + datePurchased +
+                ", fund=" + fund +
                 '}';
     }
 }

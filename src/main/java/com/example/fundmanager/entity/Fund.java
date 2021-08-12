@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -31,18 +32,24 @@ public class Fund {
     @JsonIdentityReference(alwaysAsId = true)
     private FundManager manager;
 
+    @OneToMany(mappedBy = "fund", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Position> positions;
+
     public Fund() {
     }
 
-    public Fund(String name, FundManager manager) {
+    public Fund(String name, FundManager manager, List<Position> positions) {
         this.name = name;
         this.manager = manager;
+        this.positions = positions;
     }
 
-    public Fund(Long fundId, String name, FundManager manager) {
+    public Fund(Long fundId, String name, FundManager manager, List<Position> positions) {
         this.fundId = fundId;
         this.name = name;
         this.manager = manager;
+        this.positions = positions;
     }
 
     public Long getFundId() {
@@ -69,13 +76,21 @@ public class Fund {
         this.manager = manager;
     }
 
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
+    }
+
     @Override
     public String toString() {
         return "Fund{" +
                 "fundId=" + fundId +
                 ", name='" + name + '\'' +
                 ", manager=" + manager +
+                ", positions=" + positions +
                 '}';
     }
-
 }

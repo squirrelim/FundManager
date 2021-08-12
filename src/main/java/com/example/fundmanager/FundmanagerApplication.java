@@ -37,19 +37,19 @@ public class FundmanagerApplication {
           fundManagerRepository.saveAll(managers);
 
           List<Fund> funds = List.of(
-                  new Fund(1L, "Olympic Memorial Fund", fundManagerRepository.getById(1L)),
-                  new Fund(2L, "UK Overseas Income Fund", fundManagerRepository.getById(1L)),
-                  new Fund(3L, "North America Growth", fundManagerRepository.getById(2L)),
-                  new Fund(4L, "Global Tech Fund", fundManagerRepository.getById(2L))
+                  new Fund(1L, "Olympic Memorial Fund", fundManagerRepository.getById(1L), new ArrayList<>()),
+                  new Fund(2L, "UK Overseas Income Fund", fundManagerRepository.getById(1L), new ArrayList<>()),
+                  new Fund(3L, "North America Growth", fundManagerRepository.getById(2L), new ArrayList<>()),
+                  new Fund(4L, "Global Tech Fund", fundManagerRepository.getById(2L), new ArrayList<>())
           );
           fundRepository.saveAll(funds);
 
           List<Position> positions = List.of(
-                  new Position(1L, 100L, LocalDate.of(2016, 1, 10)),
-                  new Position(1L, 250L, LocalDate.of(2016, 9, 23)),
-                  new Position(1L, 200L, LocalDate.of(2016, 8, 14)),
-                  new Position(1L, 125L, LocalDate.of(2016, 9, 23)),
-                  new Position(1L, 75L, LocalDate.of(2017, 1, 27))
+                  new Position(1L, 100L, LocalDate.of(2016, 1, 10), fundRepository.getById(1L)),
+                  new Position(1L, 250L, LocalDate.of(2016, 9, 23), fundRepository.getById(1L)),
+                  new Position(1L, 200L, LocalDate.of(2016, 8, 14), fundRepository.getById(2L)),
+                  new Position(1L, 125L, LocalDate.of(2016, 9, 23), fundRepository.getById(3L)),
+                  new Position(1L, 75L, LocalDate.of(2017, 1, 27), fundRepository.getById(4L))
           );
           positionRepository.saveAll(positions);
 
