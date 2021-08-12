@@ -32,7 +32,7 @@ public class Fund {
     @JsonIdentityReference(alwaysAsId = true)
     private FundManager manager;
 
-    @OneToMany(mappedBy = "fund", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "fund", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Position> positions;
 

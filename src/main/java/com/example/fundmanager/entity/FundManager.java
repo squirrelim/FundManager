@@ -37,7 +37,7 @@ public class FundManager {
     @Column(nullable = false)
     private String lastName;
 
-    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Fund> funds;
 
