@@ -8,7 +8,7 @@ public class PositionNotFoundException extends IllegalArgumentException{
     private final Long positionId;
 
     public PositionNotFoundException(Long id) {
-        super("Posion with id" + id + "not found.");
+        super("Posion with id" + id + " not found.");
         this.positionId = id;
     }
 }

@@ -8,7 +8,7 @@ public class FundNotFoundException extends IllegalArgumentException{
     private final Long fundId;
 
     public FundNotFoundException(Long id) {
-        super("Fund with id" + id + "not found.");
+        super("Fund with id" + id + " not found.");
         this.fundId = id;
     }
 }
