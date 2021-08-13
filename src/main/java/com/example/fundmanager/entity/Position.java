@@ -33,7 +33,7 @@ public class Position {
     private LocalDate datePurchased;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "fund")
+    @JoinColumn(name = "fund_id")
     @JsonIdentityReference(alwaysAsId = true)
     private Fund fund;
 
