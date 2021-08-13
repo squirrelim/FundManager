@@ -8,7 +8,7 @@ public class SecurityNotFoundException extends IllegalArgumentException{
     private final Long securityId;
 
     public SecurityNotFoundException(Long id) {
-        super("Security with id" + id + " not found.");
+        super("Security with id " + id + " not found.");
         this.securityId = id;
     }
 }
