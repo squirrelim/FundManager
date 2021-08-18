@@ -11,9 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Long> {
-    @Query("SELECT p FROM Position p WHERE p.positionId=?1")
-    Optional<Position> findPositionsByPositionId(Long positionId);
-
     @Query("SELECT p FROM Position p WHERE p.securityId=?1 AND p.quantity=?2 AND p.datePurchased=?3")
     Optional<Position> findPositions(Long securityId, Long quantity, LocalDate datePurchased);
 }

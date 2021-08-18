@@ -82,7 +82,7 @@ public class FundControllerTests {
     );
 
     @Test
-    public void testGetAllFundsSuccess() throws Exception{
+    public void testGetFundsSuccess() throws Exception{
         when(fundService.getFunds()).thenReturn(defaultFunds);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/fund")).andExpect(status().isOk());

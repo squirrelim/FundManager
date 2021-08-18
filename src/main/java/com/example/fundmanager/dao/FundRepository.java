@@ -9,9 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface FundRepository extends JpaRepository<Fund, Long> {
-    @Query("SELECT f FROM Fund f WHERE f.fundId=?1")
-    Optional<Fund> findFundByFundId(Long id);
-
     @Query("SELECT f FROM Fund f WHERE f.name=?1")
     Optional<Fund> findFundByName(String name);
 }
