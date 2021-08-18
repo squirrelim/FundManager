@@ -1,19 +1,24 @@
 package com.example.fundmanager.service;
 
 import  com.example.fundmanager.dao.SecurityRepository;
+import com.example.fundmanager.entity.Fund;
 import  com.example.fundmanager.entity.Security;
-import com.example.fundmanager.exception.SecurityNotFoundException;
+import com.example.fundmanager.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,10 +63,85 @@ public class SecurityServiceTests {
     }
 
     @Test
-    public void testAddNewSecurity(){
+    public void testAddSecuritySuccess(){
         Security newSecurity = new Security(3L,"Facebook");
 
         securityService.addSecurity(newSecurity);
         verify(securityRepository).save(newSecurity);
+    }
+
+    @Test
+    public void testAddSecurityAlreadyInUse(){
+        doThrow(SecurityAlreadyInUseException.class).when(securityRepository).save(any(Security.class));
+        Security newSecurity = new Security(1L, "IBM");
+        assertThrows(SecurityAlreadyInUseException.class,
+                () -> securityService.addSecurity(newSecurity));
+        verify(securityRepository).save(newSecurity);
+    }
+
+    @Test
+    public void testUpdateSecuritySuccess(){
+        Security newSecurity = new Security(1L,"Oracle");
+        Long id = 1L;
+        when(securityRepository.findById(id)).thenReturn(Optional.of(defaultSecurities.get(1)));
+        securityService.updateSecurity(id,newSecurity);
+        Security security = securityService.getSecurity(1L);
+        assertEquals(newSecurity.getSymbol(), security.getSymbol());
+        assertEquals(newSecurity.getSecurityId(), security.getSecurityId());
+    }
+
+    @Test
+    public void testUpdateSecurityNotMatching(){
+        Security newSecurity= new Security(1L,"Oracle");
+        Long id = 2L;
+
+        when(securityRepository.findById(id)).thenReturn(Optional.of(defaultSecurities.get(1)));
+        assertFalse(securityRepository.findSecurityBySymbol(newSecurity.getSymbol()).isPresent());
+
+        assertThrows(SecurityNotFoundException.class,
+                () -> securityService.updateSecurity(id, newSecurity));
+    }
+
+    @Test
+    public void testUpdateSecurityNotFound(){
+        Security newSecurity = new Security(4L,"Oracle");
+        Long id = 4L;
+
+        assertThrows(SecurityNotFoundException.class,
+                () -> securityService.updateSecurity(id, newSecurity));
+    }
+
+    @Test
+    public void testUpdateSecurityAlreadyInUse(){
+        Security newSecurity = new Security(1L,"IBM");
+        Long id = 1L;
+
+        when(securityRepository.findById(id)).thenReturn(Optional.of(defaultSecurities.get(1)));
+        when(securityRepository.findSecurityBySymbol(newSecurity.getSymbol())).thenReturn(Optional.of(defaultSecurities.get(1)));
+        assertThrows(SecurityAlreadyInUseException.class,
+                () -> securityService.updateSecurity(id, newSecurity));
+    }
+
+    @Test
+    public void testUpdateSecurityIllegalUpdate(){
+        Security newSecurity = new Security(1L,null);
+        Long id = 1L;
+
+        assertThrows(IllegalUpdatedSecurityException.class,
+                () -> securityService.updateSecurity(id, newSecurity));
+    }
+
+    @Test
+    public void testRemoveSecuritySuccess(){
+        Long id = 1L;
+        when(securityRepository.existsById(id)).thenReturn(true);
+        securityService.removeSecurity(id);
+        verify(securityRepository).deleteById(anyLong());
+    }
+
+    @Test
+    public void testRemoveSecurityNotFound(){
+        assertThrows(SecurityNotFoundException.class,
+                () -> securityService.removeSecurity(5L));
     }
 }

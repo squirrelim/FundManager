@@ -1,16 +1,9 @@
 package com.example.fundmanager.controller;
 
-import com.example.fundmanager.dao.FundManagerRepository;
-import com.example.fundmanager.dao.FundRepository;
-import com.example.fundmanager.dao.PositionRepository;
+
 import com.example.fundmanager.dao.SecurityRepository;
-import com.example.fundmanager.entity.Fund;
-import com.example.fundmanager.entity.Position;
 import com.example.fundmanager.entity.Security;
 import com.example.fundmanager.exception.*;
-import com.example.fundmanager.service.FundManagerService;
-import com.example.fundmanager.service.FundService;
-import com.example.fundmanager.service.PositionService;
 import com.example.fundmanager.service.SecurityService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,40 +28,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 public class SecurityControllerTests {
     @MockBean
-    FundManagerController fundManagerController;
-
-    @MockBean
-    FundManagerService fundManagerService;
-
-    @MockBean
-    FundManagerRepository fundManagerRepository;
-
-    @MockBean
-    PositonController positonController;
-
-    @MockBean
-    PositionService positionService;
-
-    @MockBean
-    PositionRepository positionRepository;
-
-//    @MockBean
-//    SecurityController securityController;
+    SecurityController securityController;
 
     @MockBean
     SecurityService securityService;
 
     @MockBean
     SecurityRepository securityRepository;
-
-    @MockBean
-    FundController fundController;
-
-    @MockBean
-    FundService fundService;
-
-    @MockBean
-    FundRepository fundRepository;
 
     @Autowired
     MockMvc mockMvc;
@@ -145,8 +111,8 @@ public class SecurityControllerTests {
     }
 
     @Test
-    public void testUpdateIdNotMatching() throws Exception{
-        doThrow(FundIdNotMatchingException.class).when(securityService).updateSecurity(anyLong(), any(Security.class));
+    public void testUpdateSecurityIdNotMatching() throws Exception{
+        doThrow(SecurityIdNotMatchingException.class).when(securityService).updateSecurity(anyLong(), any(Security.class));
 
         String json = "{\n" +
                 "    \"securityId\": 1,\n" +
@@ -170,7 +136,7 @@ public class SecurityControllerTests {
                 "    \"symbol\": \"IBM\",\n" +
                 "}";
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/fund/1")
+                .put("/api/Security/1")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -179,7 +145,7 @@ public class SecurityControllerTests {
     }
 
     @Test
-    public void testUpdateIllegalUpdatedFund() throws Exception{
+    public void testUpdateIllegalUpdatedSecurity() throws Exception{
         doThrow(IllegalUpdatedSecurityException.class).when(securityService).updateSecurity(anyLong(), any(Security.class));
 
         String json = "{\n" +
@@ -187,7 +153,7 @@ public class SecurityControllerTests {
                 "    \"symbol\": null,\n" +
                 "}";
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/fund/1")
+                .put("/api/Security/1")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -196,13 +162,13 @@ public class SecurityControllerTests {
     }
 
     @Test
-    public void testRemoveFundSuccess() throws Exception{
+    public void testRemoveSecuritySuccess() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/security/1")).andExpect(status().isOk());
         verify(securityService).removeSecurity(anyLong());
     }
 
     @Test
-    public void testRemoveNotFund() throws Exception{
+    public void testRemoveNotSecurity() throws Exception{
         doThrow(SecurityNotFoundException.class).when(securityService).removeSecurity(anyLong());
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/security/3")).andExpect(status().isNotFound());
         verify(securityService).removeSecurity(anyLong());
