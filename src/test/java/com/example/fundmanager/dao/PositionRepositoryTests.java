@@ -42,19 +42,19 @@ public class PositionRepositoryTests {
 
     @Test
     public void testFindPositionsByPositionIdSuccess(){
-        Optional<Position> position =  positionRepository.findPositionsByPositionId(1l);
+        Optional<Position> position =  positionRepository.findById(1l);
         assertTrue(position.isPresent());
     }
 
     @Test
     public void testFindPositionsByPositionIdNotFound(){
-        Optional<Position> position =  positionRepository.findPositionsByPositionId(12l);
+        Optional<Position> position =  positionRepository.findById(12l);
         assertFalse(position.isPresent());
     }
 
     @Test
     public void testFindPositions(){
-        Optional<Position> position =  positionRepository.findPositionsByPositionId(1l);
+        Optional<Position> position =  positionRepository.findById(1l);
         assertTrue(position.isPresent());
     }
 
