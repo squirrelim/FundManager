@@ -17,19 +17,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest
+@WebMvcTest(PositonController.class)
 public class PositionControllerTests {
+
     @MockBean
     FundManagerController fundManagerController;
 
@@ -98,5 +103,37 @@ public class PositionControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/position/1")).andExpect(status().isNotFound());
     }
 
+    @Test
+    public void testAddPosition() throws Exception {
+        String json = "{\"positionId\": 8, \"securityId\": 2, \"quantity\": 400, \"datePurchased\": " +
+                "\"1970-01-01\", \"fund\": {\"fundId\":1}}";
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/api/position")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+        verify(positionService).addPosition(any(Position.class));
+    }
+
+    @Test
+    public void testRemovePositionSuccess() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/position/1")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdatePositionSuccess() throws Exception{
+        String json = "{\"positionId\": 1, \"securityId\": 2, \"quantity\": 400, \"datePurchased\": " +
+                "\"1970-01-01\", \"fund\": {\"fundId\":1}}";
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/api/position")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+        verify(positionService).updatePosition(any(Long.class),any(Position.class));
+    }
 
 }
