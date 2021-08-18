@@ -72,8 +72,7 @@ public class FundService {
 
         //Update Name
         if(updatedFund.getName() != null &&
-        updatedFund.getName().length() > 0 &&
-        !updatedFund.getName().equals(fund.getName())){
+        updatedFund.getName().length() > 0){
 
             Optional<Fund> fundCheck = fundRepository.findFundByName(updatedFund.getName());
             if(fundCheck.isPresent()){
