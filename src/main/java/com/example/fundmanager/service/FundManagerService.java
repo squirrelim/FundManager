@@ -48,7 +48,7 @@ public class FundManagerService {
             throw new ManagerAlreadyInUseException(manager);
         }
         for(Fund fund: manager.getFunds()){
-            fund.setManager(manager);
+//            fund.setManager(manager);
         }
         fundManagerRepository.save(manager);
     }

@@ -37,10 +37,14 @@ public class FundmanagerApplication {
           fundManagerRepository.saveAll(managers);
 
           List<Fund> funds = List.of(
-                  new Fund(1L, "Olympic Memorial Fund", fundManagerRepository.getById(1L), new ArrayList<>()),
-                  new Fund(2L, "UK Overseas Income Fund", fundManagerRepository.getById(1L), new ArrayList<>()),
-                  new Fund(3L, "North America Growth", fundManagerRepository.getById(2L), new ArrayList<>()),
-                  new Fund(4L, "Global Tech Fund", fundManagerRepository.getById(2L), new ArrayList<>())
+//                  new Fund(1L, "Olympic Memorial Fund", fundManagerRepository.getById(1L), new ArrayList<>()),
+//                  new Fund(2L, "UK Overseas Income Fund", fundManagerRepository.getById(1L), new ArrayList<>()),
+//                  new Fund(3L, "North America Growth", fundManagerRepository.getById(2L), new ArrayList<>()),
+//                  new Fund(4L, "Global Tech Fund", fundManagerRepository.getById(2L), new ArrayList<>())
+          new Fund(1L, "Olympic Memorial Fund", 1L),
+                  new Fund(2L, "UK Overseas Income Fund", 1L),
+                  new Fund(3L, "North America Growth", 2L),
+                  new Fund(4L, "Global Tech Fund", 2L)
           );
           fundRepository.saveAll(funds);
 
