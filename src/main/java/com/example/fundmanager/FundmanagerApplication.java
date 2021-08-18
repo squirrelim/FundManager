@@ -49,11 +49,16 @@ public class FundmanagerApplication {
           fundRepository.saveAll(funds);
 
           List<Position> positions = List.of(
-                  new Position(1L, 100L, LocalDate.of(2016, 1, 10), fundRepository.getById(1L)),
-                  new Position(1L, 250L, LocalDate.of(2016, 9, 23), fundRepository.getById(1L)),
-                  new Position(1L, 200L, LocalDate.of(2016, 8, 14), fundRepository.getById(2L)),
-                  new Position(1L, 125L, LocalDate.of(2016, 9, 23), fundRepository.getById(3L)),
-                  new Position(1L, 75L, LocalDate.of(2017, 1, 27), fundRepository.getById(4L))
+//                  new Position(1L, 100L, LocalDate.of(2016, 1, 10), fundRepository.getById(1L)),
+//                  new Position(1L, 250L, LocalDate.of(2016, 9, 23), fundRepository.getById(1L)),
+//                  new Position(1L, 200L, LocalDate.of(2016, 8, 14), fundRepository.getById(2L)),
+//                  new Position(1L, 125L, LocalDate.of(2016, 9, 23), fundRepository.getById(3L)),
+//                  new Position(1L, 75L, LocalDate.of(2017, 1, 27), fundRepository.getById(4L))
+                  new Position(1L, 100L, LocalDate.of(2016, 1, 10), 1L),
+                  new Position(1L, 250L, LocalDate.of(2016, 9, 23), 1L),
+                  new Position(1L, 200L, LocalDate.of(2016, 8, 14), 2L),
+                  new Position(1L, 125L, LocalDate.of(2016, 9, 23), 3L),
+                  new Position(1L, 75L, LocalDate.of(2017, 1, 27), 4L)
           );
           positionRepository.saveAll(positions);
 
