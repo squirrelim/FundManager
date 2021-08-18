@@ -4,10 +4,10 @@ import com.example.fundmanager.dao.FundManagerRepository;
 import com.example.fundmanager.dao.FundRepository;
 import com.example.fundmanager.dao.PositionRepository;
 import com.example.fundmanager.dao.SecurityRepository;
-import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.entity.Position;
-import com.example.fundmanager.exception.FundNotFoundException;
+import com.example.fundmanager.entity.Security;
 import com.example.fundmanager.exception.PositionNotFoundException;
+import com.example.fundmanager.exception.SecurityNotFoundException;
 import com.example.fundmanager.service.FundManagerService;
 import com.example.fundmanager.service.FundService;
 import com.example.fundmanager.service.PositionService;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class PositionControllerTests {
+public class SecurityControllerTests {
     @MockBean
     FundManagerController fundManagerController;
 
@@ -39,8 +39,8 @@ public class PositionControllerTests {
     @MockBean
     FundManagerRepository fundManagerRepository;
 
-//    @MockBean
-//    PositonController positonController;
+    @MockBean
+    PositonController positonController;
 
     @MockBean
     PositionService positionService;
@@ -48,8 +48,8 @@ public class PositionControllerTests {
     @MockBean
     PositionRepository positionRepository;
 
-    @MockBean
-    SecurityController securityController;
+//    @MockBean
+//    SecurityController securityController;
 
     @MockBean
     SecurityService securityService;
@@ -69,33 +69,30 @@ public class PositionControllerTests {
     @Autowired
     MockMvc mockMvc;
 
-    List<Position> defaultPositions = List.of(
-            new Position(1L, 100L, LocalDate.of(2016, 1, 10), 1L),
-            new Position(1L, 250L, LocalDate.of(2016, 9, 23), 1L),
-            new Position(1L, 200L, LocalDate.of(2016, 8, 14), 2L),
-            new Position(1L, 125L, LocalDate.of(2016, 9, 23), 3L),
-            new Position(1L, 75L, LocalDate.of(2017, 1, 27), 4L)
+    List<Security> defaultSecurities = List.of(
+            new Security(1L, "IBM"),
+            new Security(2L, "Microsoft")
     );
 
     @Test
-    public void testGetAllPositionsSuccess() throws Exception{
-        when(positionService.getPositions()).thenReturn(defaultPositions);
+    public void testGetAllSecuritiesSuccess() throws Exception{
+        when(securityService.getSecurities()).thenReturn(defaultSecurities);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/position")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/security")).andExpect(status().isOk());
     }
 
     @Test
-    public void testGetPositionSuccess() throws Exception{
-        when(positionService.getPosition(1L)).thenReturn(defaultPositions.get(0));
+    public void testGetSecuritySuccess() throws Exception{
+        when(securityService.getSecurity(1L)).thenReturn(defaultSecurities.get(0));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/position/1")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/security/1")).andExpect(status().isOk());
     }
 
     @Test
-    public void testGetPositionNotFound() throws Exception{
-        when(positionService.getPosition(1L)).thenThrow(PositionNotFoundException.class);
+    public void testGetSecurityNotFound() throws Exception{
+        when(securityService.getSecurity(1L)).thenThrow(SecurityNotFoundException.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/position/1")).andExpect(status().isNotFound());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/security/1")).andExpect(status().isNotFound());
     }
 
 

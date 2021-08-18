@@ -59,6 +59,11 @@ public class Fund {
         this.employeeId = employeeId;
     }
 
+    public Fund(String name, Long employeeId) {
+        this.name = name;
+        this.employeeId = employeeId;
+    }
+
     public Long getFundId() {
         return fundId;
     }

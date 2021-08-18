@@ -32,8 +32,11 @@ public class Position {
     @Column(nullable = false)
     private LocalDate datePurchased;
 
+    @Column(nullable = false, name = "fund_id")
+    private Long fundId;
+
     @ManyToOne(optional = false)
-    @JoinColumn(name = "fund_id")
+    @JoinColumn(name = "fund_id", insertable = false, updatable = false)
     @JsonIdentityReference(alwaysAsId = true)
     private Fund fund;
 
@@ -57,6 +60,13 @@ public class Position {
         this.quantity = quantity;
         this.datePurchased = datePurchased;
         this.fund = fund;
+    }
+
+    public Position(Long securityId, Long quantity, LocalDate datePurchased, Long fundId) {
+        this.securityId = securityId;
+        this.quantity = quantity;
+        this.datePurchased = datePurchased;
+        this.fundId = fundId;
     }
 
     public Long getPositionId() {
@@ -99,6 +109,14 @@ public class Position {
         this.fund = fund;
     }
 
+    public Long getFundId() {
+        return fundId;
+    }
+
+    public void setFundId(Long fundId) {
+        this.fundId = fundId;
+    }
+
     @Override
     public String toString() {
         return "Position{" +
@@ -106,6 +124,7 @@ public class Position {
                 ", securityId=" + securityId +
                 ", quantity=" + quantity +
                 ", datePurchased=" + datePurchased +
+                ", fundId=" + fundId +
                 ", fund=" + fund +
                 '}';
     }
