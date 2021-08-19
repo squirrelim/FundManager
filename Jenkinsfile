@@ -17,6 +17,7 @@ pipeline {
          sh "docker build -f Dockerfile-mysql -t emps/mysql ."
          sh "docker build -f Dockerfile-app -t emps/app ."
          sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
+         sh "docker exec -it mysql -u root -p root"
          sh "docker run --name app --link mysql:mysql emps/app"
       }
     }
