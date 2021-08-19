@@ -14,6 +14,12 @@ pipeline {
     stage('Docker Build') {
       agent any
       steps {
+         sh "docker container kill app"
+         sh "docker container rm app"
+         sh "docker container kill mysql"
+         sh "docker container rm mysql"
+         sh "docker rmi emps/app"
+         sh "docker rmi emps/mysql"
          sh "docker build -f Dockerfile-mysql -t emps/mysql ."
          sh "docker build -f Dockerfile-app -t emps/app ."
          sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
