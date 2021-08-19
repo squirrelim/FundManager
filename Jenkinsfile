@@ -1,5 +1,3 @@
-def dockerHome = tool 'myDocker'
-
 pipeline {
     agent {
         docker {
@@ -9,7 +7,10 @@ pipeline {
     }
     stages {
         stage('Initialize'){
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
+            steps{
+                def dockerHome = tool 'myDocker'
+                env.PATH = "${dockerHome}/bin:${env.PATH}"
+            }
         }
         stage('Build') {
              // this stage also builds and tests the Java project using Maven
