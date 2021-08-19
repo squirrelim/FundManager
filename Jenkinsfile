@@ -1,3 +1,7 @@
+def projectName = 'fundmanager'
+def version = "0.0.${currentBuild.number}"
+def dockerImageTag = "${projectName}:${version}"
+
 pipeline {
   agent any
   stages {
@@ -29,6 +33,11 @@ pipeline {
     } 
 
     stage('Deploy Container To Openshift') {
+      agent {
+        docker {
+          image 'openshift/hello-openshift:v3.9.0'
+        }
+      }
       steps {
         sh "oc login https://localhost:8443 --username admin --password admin --insecure-skip-tls-verify=true"
         sh "oc project ${projectName} || oc new-project ${projectName}"
