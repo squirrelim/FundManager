@@ -6,6 +6,10 @@ pipeline {
         }
     }
     stages {
+        stage('Initialize'){
+            def dockerHome = tool 'myDocker'
+            env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
         stage('Build') {
              // this stage also builds and tests the Java project using Maven
              steps {
