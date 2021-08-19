@@ -6,6 +6,6 @@ COPY target/fundmanager-0.0.1-SNAPSHOT.jar /app.jar
 #RUN sh -c 'echo spring.datasource.username=root >> application.properties'
 #RUN sh -c 'echo spring.datasource.password=root >> application.properties'
 
-CMD ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
 
 EXPOSE 8080
