@@ -7,6 +7,7 @@ pipeline {
     stage('Docker Build') {
       agent any
       steps {
+        sh "mvn --version"
         sh 'mvn clean install -D skipTests'
         sh "docker build -f Dockerfile-mysql -t emps/mysql ."
         sh "docker build -f Dockerfile-app -t emps/app ."
