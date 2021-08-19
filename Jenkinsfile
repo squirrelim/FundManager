@@ -24,25 +24,33 @@ pipeline {
     stage('Docker Build') {
       agent any
       steps {
-        try {
-            sh "docker container kill mysql"
-        } catch (err) {
-            echo err.getMessage()
+        script {
+          try {
+              sh "docker container kill mysql"
+          } catch (err) {
+              echo err.getMessage()
+          }
         }
-        try {
-            sh "docker container rm mysql"
-        } catch (err) {
-            echo err.getMessage()
+        script {
+          try {
+              sh "docker container rm mysql"
+          } catch (err) {
+              echo err.getMessage()
+          }
         }
-        try {
-            sh "docker container kill app"
-        } catch (err) {
-            echo err.getMessage()
+        script {
+          try {
+              sh "docker container kill app"
+          } catch (err) {
+              echo err.getMessage()
+          }
         }
-        try {
-            sh "docker container rm app"
-        } catch (err) {
-            echo err.getMessage()
+        script {
+          try {
+              sh "docker container rm app"
+          } catch (err) {
+              echo err.getMessage()
+          }
         }
         sh "docker build -f Dockerfile-mysql -t emps/mysql ."
         sh "docker build -f Dockerfile-app -t emps/app ."
