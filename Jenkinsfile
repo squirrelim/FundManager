@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Build docker image') {
+        stage('Build') {
              // this stage also builds and tests the Java project using Maven
              steps {
                sh "docker build -f Dockerfile-mysql -t emps/mysql ."
