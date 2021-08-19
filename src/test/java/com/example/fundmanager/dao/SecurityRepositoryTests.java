@@ -45,6 +45,7 @@ public class SecurityRepositoryTests {
         assertEquals(0, securities.size());
 
         securityRepository.saveAll(defaultSecurities);
+        securities = securityRepository.findAll();
         assertEquals(defaultSecurities.size(), securities.size());
     }
 

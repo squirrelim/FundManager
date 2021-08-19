@@ -1,8 +1,8 @@
 package com.example.fundmanager.service;
 
 import  com.example.fundmanager.dao.SecurityRepository;
-import com.example.fundmanager.entity.Fund;
 import  com.example.fundmanager.entity.Security;
+import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,24 +81,25 @@ public class SecurityServiceTests {
 
     @Test
     public void testUpdateSecuritySuccess(){
-        Security newSecurity = new Security(1L,"Oracle");
+        Security newSecurity = new Security(1L,"Oracle1");
         Long id = 1L;
+
+
         when(securityRepository.findById(id)).thenReturn(Optional.of(defaultSecurities.get(1)));
         securityService.updateSecurity(id,newSecurity);
         Security security = securityService.getSecurity(1L);
         assertEquals(newSecurity.getSymbol(), security.getSymbol());
-        assertEquals(newSecurity.getSecurityId(), security.getSecurityId());
     }
 
     @Test
     public void testUpdateSecurityNotMatching(){
-        Security newSecurity= new Security(1L,"Oracle");
+        Security newSecurity= new Security(1L,"Oracle1");
         Long id = 2L;
 
         when(securityRepository.findById(id)).thenReturn(Optional.of(defaultSecurities.get(1)));
         assertFalse(securityRepository.findSecurityBySymbol(newSecurity.getSymbol()).isPresent());
 
-        assertThrows(SecurityNotFoundException.class,
+        assertThrows(SecurityIdNotMatchingException.class,
                 () -> securityService.updateSecurity(id, newSecurity));
     }
 
