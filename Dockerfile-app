@@ -6,6 +6,7 @@ RUN sh -c 'echo spring.datasource.url=jdbc:mysql://mysql:3306/manager?serverTime
 RUN sh -c 'echo spring.datasource.username=root >> application-prod.properties'
 RUN sh -c 'echo spring.datasource.password=C0nygre-C0nygre >> application-prod.properties'
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
+CMD ["Sleep 240 && java -jar /app.jar"]
+#ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
 
 EXPOSE 8080
