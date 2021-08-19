@@ -2,6 +2,10 @@ FROM openjdk:11.0
 
 COPY target/fundmanager-0.0.1-SNAPSHOT.jar /app.jar
 
+RUN sh -c 'echo spring.datasource.url=jdbc:mysql://mysql:3306/manager?serverTimezone=UTC&useSSL=false > application.properties'
+RUN sh -c 'echo spring.datasource.username=root >> application.properties'
+RUN sh -c 'echo spring.datasource.password=root >> application.properties'
+
 ENTRYPOINT ["java","-jar","/app.jar"]
 
 EXPOSE 8080
