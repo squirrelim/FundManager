@@ -2,6 +2,6 @@ FROM mysql:8.0.26
 
 EXPOSE 3306
 
-ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_ROOT_PASSWORD=C0nygre-C0nygre
 
 COPY manager.sql /docker-entrypoint-initdb.d
