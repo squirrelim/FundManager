@@ -1,19 +1,19 @@
 pipeline {
-  tools {
-    docker "Docker"
-  }
-  agent {
-    docker {
-      image 'maven:3.8.2-jdk-11'
-      args '-v /root/.m2:/root/.m2'
-    }
-  }
+  agent any
   stages {
+    stage('Maven Install') {
+      agent {
+        docker {
+          image 'maven:3.8.1'
+        }
+      }
+      steps {
+        sh 'mvn clean install -D skipTests'
+      }
+    }
     stage('Docker Build') {
       agent any
       steps {
-        sh "mvn --version"
-        sh 'mvn clean install -D skipTests'
         sh "docker build -f Dockerfile-mysql -t emps/mysql ."
         sh "docker build -f Dockerfile-app -t emps/app ."
         sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
@@ -21,7 +21,12 @@ pipeline {
         sh "docker run --name app -d --link mysql:mysql emps/app"
       }
     } 
-    stage('Test') { 
+    stage('Test') {
+      agent {
+        docker {
+          image 'maven:3.8.1'
+        }
+      }
       steps {
         sh 'mvn test' 
       }
