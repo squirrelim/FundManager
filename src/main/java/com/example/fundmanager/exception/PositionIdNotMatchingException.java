@@ -11,7 +11,7 @@ public class PositionIdNotMatchingException extends IllegalArgumentException{
     private final Position position;
 
     public PositionIdNotMatchingException(Long id, Position position) {
-        super("Position id " + position.getPositionId().toString() + " is different from id " + id.toString() + " in path");
+        //super("Position id " + position.getPositionId().toString() + " is different from id " + id.toString() + " in path");
         this.id = id;
         this.position = position;
     }

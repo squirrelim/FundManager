@@ -69,6 +69,14 @@ public class Position {
         this.fundId = fundId;
     }
 
+    public Position(Long positionId,Long securityId, Long quantity, LocalDate datePurchased, Long fundId) {
+        this.positionId = positionId;
+        this.securityId = securityId;
+        this.quantity = quantity;
+        this.datePurchased = datePurchased;
+        this.fundId = fundId;
+    }
+
     public Long getPositionId() {
         return positionId;
     }

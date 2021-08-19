@@ -71,25 +71,23 @@ public class PositionServiceTests {
 
     @Test
     public void testUpdatePositionSuccess(){
+        when(positionRepository.findById(1L))
+                .thenReturn(Optional.of(defaultPositions.get(0)));
         Position updateposition =
-                new Position(1l,1L, 400L, LocalDate.of(2016, 1, 10),
-                        new Fund(1l,"CMS",1l));
-        positionService.updatePosition(1l,updateposition);
+                new Position(1L,1L, 400L, LocalDate.of(2016, 1, 10), 2L);
 
-        Position position = positionRepository.getById(1l);
+        positionService.updatePosition(1L,updateposition);
 
-        assertTrue(updateposition.getPositionId()==position.getPositionId()
-                &&updateposition.getQuantity()==position.getQuantity()
-                &&updateposition.getDatePurchased().isEqual(position.getDatePurchased())
-                &&updateposition.getSecurityId()==position.getSecurityId()
-                &&updateposition.getFundId()==position.getFundId());
+        Position position = positionService.getPosition(1L);
+
+        assertEquals(updateposition.getQuantity(), position.getQuantity());
+        assertEquals(updateposition.getDatePurchased(), position.getDatePurchased());
     }
 
     @Test
     public void testUpdatePositionNotFound(){
         Position updateposition =
-                new Position(0l,2L, 400L, LocalDate.of(2016, 3, 10),
-                        new Fund(2l,"CMS",1l));
+                new Position(0l,2L, 400L, LocalDate.of(2016, 3, 10), 1L);
         assertThrows(PositionNotFoundException.class,
                 () -> positionService.updatePosition(0l,updateposition));
     }
@@ -97,19 +95,28 @@ public class PositionServiceTests {
     @Test
     public void testUpdateUserPositionIdNotMatching(){
         Position updateposition =
-                new Position(0l,2L, 400L, LocalDate.of(2016, 3, 10),
-                        new Fund(2l,"CMS",1l));
+                new Position(2l,2L, 400L, LocalDate.of(2016, 3, 10), 2L);
+
+        when(positionRepository.findById(1L))
+                .thenReturn(Optional.of(defaultPositions.get(0)));
         assertThrows(PositionIdNotMatchingException.class,
                 () -> positionService.updatePosition(1l,updateposition));
     }
 
     @Test
     public void testUpdateUserPositionAlreadyInUse(){
-        Position updateposition =
-                new Position(1l,1L, 100L, LocalDate.of(2016, 1, 10),
-                        new Fund(1l,"CMS",1l));
+        Position updatedPosition =
+                new Position(1L,1L, 100L, LocalDate.of(2016, 1, 10), 1L);
+
+        when(positionRepository.findById(1L))
+                .thenReturn(Optional.of(defaultPositions.get(0)));
+        when(positionRepository.findPositions(
+                updatedPosition.getSecurityId(),
+                updatedPosition.getQuantity(),
+                updatedPosition.getDatePurchased()))
+                .thenReturn(Optional.of(defaultPositions.get(0)));
         assertThrows(PositionAlreadyInUseException.class,
-                () -> positionService.updatePosition(1l,updateposition));
+                () -> positionService.updatePosition(1l,updatedPosition));
     }
 }
 

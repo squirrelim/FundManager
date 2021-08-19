@@ -108,7 +108,7 @@ public class PositionControllerTests {
         String json = "{\"positionId\": 8, \"securityId\": 2, \"quantity\": 400, \"datePurchased\": " +
                 "\"1970-01-01\", \"fund\": {\"fundId\":1}}";
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/position")
+                .post("/api/position")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -124,10 +124,10 @@ public class PositionControllerTests {
 
     @Test
     public void testUpdatePositionSuccess() throws Exception{
-        String json = "{\"positionId\": 1, \"securityId\": 2, \"quantity\": 400, \"datePurchased\": " +
-                "\"1970-01-01\", \"fund\": {\"fundId\":1}}";
+        String json = "{\"positionId\": 1, \"securityId\": 1, \"quantity\": 400, \"datePurchased\": " +
+                "\"1970-01-01\", \"fundId\":1}";
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/position")
+                .put("/api/position/1")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON);
 
