@@ -8,14 +8,12 @@ pipeline {
         }
       }
       steps {
-        sh 'mvn install -D skipTests'
+        sh 'mvn clean install -D skipTests'
       }
     }
     stage('Docker Build') {
       agent any
       steps {
-         sh "docker container rm app"
-         sh "docker container rm mysql"
          sh "docker build -f Dockerfile-mysql -t emps/mysql ."
          sh "docker build -f Dockerfile-app -t emps/app ."
          sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
