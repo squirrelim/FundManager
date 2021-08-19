@@ -1,26 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Maven Install') {
-      agent {
-        docker {
-          image 'maven:3.8.1'
-        }
-      }
-      steps {
-        sh 'mvn clean install -D skipTests'
-      }
-    }
-    stage('Docker Build') {
-      agent any
-      steps {
-        sh "docker build -f Dockerfile-mysql -t emps/mysql ."
-        sh "docker build -f Dockerfile-app -t emps/app ."
-        sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
-        sh "sleep 10"
-        sh "docker run --name app -d --link mysql:mysql emps/app"
-      }
-    } 
     stage('Test') {
       agent {
         docker {
@@ -36,6 +16,18 @@ pipeline {
         }
       }
     }
+    
+    stage('Docker Build') {
+      agent any
+      steps {
+        sh "docker build -f Dockerfile-mysql -t emps/mysql ."
+        sh "docker build -f Dockerfile-app -t emps/app ."
+        sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
+        sh "sleep 10"
+        sh "docker run --name app -d --link mysql:mysql emps/app"
+      }
+    } 
+
     stage('Deploy Container To Openshift') {
       steps {
         sh "oc login https://localhost:8443 --username admin --password admin --insecure-skip-tls-verify=true"
