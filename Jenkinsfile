@@ -1,5 +1,5 @@
 def projectName = 'javaapp'
-def version = "0.0.${currentBuild.number}"
+def version = "0.0.99"
 def dockerImageTag = "${projectName}:${version}"
 def mysqlName = 'mysql'
 def dockerImageTag2 = "${mysqlName}:${version}"
