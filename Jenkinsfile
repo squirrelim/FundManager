@@ -1,6 +1,7 @@
 def projectName = 'app'
 def version = "0.0.${currentBuild.number}"
 def dockerImageTag = "${projectName}:${version}"
+def dockerImageTag2 = "mysql:${version}"
 
 pipeline {
   agent any
@@ -52,11 +53,11 @@ pipeline {
               echo err.getMessage()
           }
         }
-        sh "docker build -f Dockerfile-mysql -t emps/mysql ."
+        sh "docker build -f Dockerfile-mysql -t ${dockerImageTag2} ."
         sh "docker build -f Dockerfile-app -t ${dockerImageTag} ."
         sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
         sh "sleep 10"
-        sh "docker run --name app -d --link mysql:mysql ${dockerImageTag}"
+        sh "docker run --name app -d --link ${dockerImageTag2}:mysql ${dockerImageTag}"
       }
     } 
 
@@ -66,6 +67,7 @@ pipeline {
         sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
         sh "oc project ${projectName} || oc new-project ${projectName}"
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
+        sh "oc new-app ${dockerImageTag2}"
         sh "oc new-app ${dockerImageTag}"
         sh "oc expose svc/${projectName}"
       }
