@@ -66,7 +66,7 @@ pipeline {
         sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
         sh "oc project ${projectName} || oc new-project ${projectName}"
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
-        sh "oc new-app ${dockerImageTag}"
+        sh "oc new-app emp/app"
         sh "oc expose svc/${projectName}"
       }
     }
