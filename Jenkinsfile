@@ -23,7 +23,7 @@ pipeline {
       }
     }
     
-    stage('Docker Build') {
+    stage('Build') {
       agent any
       steps {
         script {
@@ -62,7 +62,7 @@ pipeline {
       }
     } 
 
-    stage('Deploy Container To Openshift') {
+    stage('Deploy') {
       agent any
       steps {
         sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
