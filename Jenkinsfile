@@ -71,6 +71,7 @@ pipeline {
         sh "oc new-app ${dockerImageTag2}"
         sh "oc new-app ${dockerImageTag}"
         sh "oc expose svc/${projectName}"
+        sh "oc status"
       }
     }
   }
