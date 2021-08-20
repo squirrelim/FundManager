@@ -5,7 +5,21 @@ def dockerImageTag = "emp/app"
 pipeline {
   agent any
   stages {
-    
+    stage('Test') {
+      agent {
+        docker {
+          image 'maven:3.8.1'
+        }
+      }
+      steps {
+        sh 'mvn test' 
+      }
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml' 
+        }
+      }
+    }
     
     stage('Docker Build') {
       agent any
