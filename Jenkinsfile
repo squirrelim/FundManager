@@ -58,7 +58,7 @@ pipeline {
         sh "docker build -f Dockerfile-app -t ${dockerImageTag} ."
         sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
         sh "sleep 10"
-        sh "docker run --name app -d -p 8080:8888 --link mysql:mysql ${dockerImageTag}"
+        sh "docker run --name app -d -p 8888:8080 --link mysql:mysql ${dockerImageTag}"
       }
     } 
 
