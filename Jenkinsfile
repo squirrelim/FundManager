@@ -1,4 +1,4 @@
-def projectName = 'javaApp'
+def projectName = 'javaapp'
 def version = "0.0.${currentBuild.number}"
 def dockerImageTag = "${projectName}:${version}"
 def mysqlName = 'mysql'
