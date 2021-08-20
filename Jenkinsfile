@@ -53,10 +53,10 @@ pipeline {
           }
         }
         sh "docker build -f Dockerfile-mysql -t emps/mysql ."
-        sh "docker build -f Dockerfile-app -t emps/app ."
+        sh "docker build -f Dockerfile-app -t emps/app:latest ."
         sh "docker run --name mysql -d -p 3306:3306 emps/mysql"
         sh "sleep 10"
-        sh "docker run --name app -d --link mysql:mysql emps/app"
+        sh "docker run --name app -d --link mysql:mysql emps/app:latest"
       }
     } 
 
