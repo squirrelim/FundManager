@@ -26,34 +26,11 @@ pipeline {
     stage('Build') {
       agent any
       steps {
-        script {
-          try {
-              sh "docker container kill mysql"
-          } catch (err) {
-              echo err.getMessage()
-          }
-        }
-        script {
-          try {
-              sh "docker container rm mysql"
-          } catch (err) {
-              echo err.getMessage()
-          }
-        }
-        script {
-          try {
-              sh "docker container kill app"
-          } catch (err) {
-              echo err.getMessage()
-          }
-        }
-        script {
-          try {
-              sh "docker container rm app"
-          } catch (err) {
-              echo err.getMessage()
-          }
-        }
+        sh "docker container kill mysql || echo "no running container named mysql ""
+        sh "docker container rm mysql || echo "no container named mysql ""
+        sh "docker container kill app || echo "no running container named app ""
+        sh "docker container rm app || echo "no container named mysql ""
+
         sh "docker build -f Dockerfile-mysql -t ${dockerImageTag2} ."
         sh "docker build -f Dockerfile-app -t ${dockerImageTag} ."
         sh "docker run --name mysql -d -p 3306:3306 ${dockerImageTag2}"
