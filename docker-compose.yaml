@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-mysql
-    image: mysql:0.0.99
+    image: db
     ports:
     - "3306:3306"
     restart: always
@@ -21,13 +21,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-app
-    image: app:0.0.99
+    image: backend
     links:
-      - mysql:mysql
+      - db:db
     ports:
     - "8888:8080"
     depends_on:
-      - mysql
+      - db
     command:
       - /bin/sh
       - -c
