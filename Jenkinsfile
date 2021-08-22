@@ -25,18 +25,18 @@ pipeline {
         sh "echo \"start testing\""
         //sh 'mvn test'
       }
-      post {
-        always {
-          junit 'target/surefire-reports/*.xml' 
-        }
-      }
+//      post {
+//        always {
+//          junit 'target/surefire-reports/*.xml'
+//        }
+//      }
     }
     
     stage('Deploy') {
       agent any
       steps {
         sh "docker-compose down || echo \"application not running\""
-        sh "docker-compose up -d"
+        sh "docker-compose up"
       }
     } 
 
