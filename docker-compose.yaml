@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-mysql
-    image: mysql
+    image: mysql:latest
     ports:
     - "3306:3306"
     restart: always
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-app
-    image: app
+    image: app:latest
     links:
       - mysql:mysql
     ports:
