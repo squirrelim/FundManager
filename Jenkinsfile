@@ -8,7 +8,11 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent any
+      agent {
+        docker {
+          image 'maven:3.8.1'
+        }
+      }
       steps {
         sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
         sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
