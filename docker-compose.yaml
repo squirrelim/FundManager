@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-app
-    image: backend
+    image: app
     links:
       - mysql:mysql
     ports:
