@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  db:
-    container_name: db
+  mysql:
+    container_name: mysql
     build:
       context: .
       dockerfile: Dockerfile-mysql
-    image: db
+    image: mysql
     ports:
     - "3306:3306"
     restart: always
@@ -15,19 +15,21 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql_vol
+    security_opt:
+      - seccomp:unconfined
 
-  backend:
-    container_name: backend
+  app:
+    container_name: app
     build:
       context: .
       dockerfile: Dockerfile-app
     image: backend
     links:
-      - db:db
+      - mysql:mysql
     ports:
     - "8888:8080"
     depends_on:
-      - db
+      - mysql
     command:
       - /bin/sh
       - -c
