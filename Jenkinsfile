@@ -65,7 +65,7 @@ pipeline {
     stage('Deploy') {
       agent any
       steps {
-        sh "oc login https://http://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
+        sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
         sh "oc project ${projectName} || oc new-project ${projectName}"
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
