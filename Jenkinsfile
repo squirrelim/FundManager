@@ -22,6 +22,7 @@ pipeline {
         }
       }
       steps {
+        sh "echo \"start testing\""
         //sh 'mvn test'
       }
       post {
