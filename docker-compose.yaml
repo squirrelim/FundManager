@@ -26,4 +26,9 @@ services:
       - mysql:mysql
     ports:
     - "8888:8080"
-    command: sleep 1m
+    depends_on:
+      - mysql
+    command: /bin/bash -c '
+      sleep 60;
+      echo "sleep over";
+      '
