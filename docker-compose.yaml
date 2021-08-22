@@ -24,3 +24,5 @@ services:
     image: app:0.0.99
     links:
       - mysql:mysql
+    ports:
+    - "8888:8080"
