@@ -7,17 +7,7 @@ def dockerImageTag_mysql = "${mysqlName}:${version}"
 pipeline {
   agent any
   stages {
-    stage('Build') {
-      agent {
-        docker {
-          image 'maven:3.8.1'
-        }
-      }
-      steps {
-        sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
-        sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
-      }
-    }
+
 
     stage('Test') {
       agent {
@@ -39,6 +29,8 @@ pipeline {
       agent any
       steps {
         sh "docker-compose down || echo \"application not running\""
+        sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
+        sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
         sh "docker-compose up"
       }
     } 
