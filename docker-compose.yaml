@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  mysql:
-    container_name: mysql
+  db:
+    container_name: db
     build:
       context: .
       dockerfile: Dockerfile-mysql
@@ -16,8 +16,8 @@ services:
     volumes:
       - mysql_vol
 
-  app:
-    container_name: app
+  backend:
+    container_name: backend
     build:
       context: .
       dockerfile: Dockerfile-app
@@ -28,7 +28,10 @@ services:
     - "8888:8080"
     depends_on:
       - mysql
-    command: /bin/bash -c '
-      sleep 60;
-      echo "sleep over";
-      '
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sleep 30
+        echo "sleep over"
+        java -jar -Dspring.profiles.active=prod /app.jar
