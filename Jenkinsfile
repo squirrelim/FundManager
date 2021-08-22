@@ -42,7 +42,7 @@ pipeline {
         sh "oc project ${projectName} || oc new-project ${projectName}"
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
-        sh "oc new-app ${dockerImageTag2}"
+        sh "oc new-app ${dockerImageTag_mysql}"
         sh "oc new-app ${dockerImageTag_app}"
         sh "oc expose svc/${projectName}"
         sh "oc status"
