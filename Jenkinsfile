@@ -1,12 +1,20 @@
-def projectName = 'javaapp'
-def version = "0.0.99"
-def dockerImageTag = "${projectName}:${version}"
+def projectName = 'app'
+def version = "latest"
+def dockerImageTag_app = "${projectName}:${version}"
 def mysqlName = 'mysql'
-def dockerImageTag2 = "${mysqlName}:${version}"
+def dockerImageTag_mysql = "${mysqlName}:${version}"
 
 pipeline {
   agent any
   stages {
+    stage('Build') {
+      agent any
+      steps {
+        sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
+        sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
+      }
+    }
+
     stage('Test') {
       agent {
         docker {
@@ -23,23 +31,15 @@ pipeline {
       }
     }
     
-    stage('Build') {
+    stage('Deploy') {
       agent any
       steps {
-        sh "docker container kill mysql || echo "no running container named mysql ""
-        sh "docker container rm mysql || echo "no container named mysql ""
-        sh "docker container kill app || echo "no running container named app ""
-        sh "docker container rm app || echo "no container named mysql ""
-
-        sh "docker build -f Dockerfile-mysql -t ${dockerImageTag2} ."
-        sh "docker build -f Dockerfile-app -t ${dockerImageTag} ."
-        sh "docker run --name mysql -d -p 3306:3306 ${dockerImageTag2}"
-        sh "sleep 10"
-        sh "docker run --name app -d -p 8888:8080 --link mysql:mysql ${dockerImageTag}"
+        sh "docker-compose down || echo "application not running""
+        sh "docker-compose up"
       }
     } 
 
-    stage('Deploy') {
+    stage('Deploy Container to OpenShift') {
       agent any
       steps {
         sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
@@ -47,7 +47,7 @@ pipeline {
         sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc new-app ${dockerImageTag2}"
-        sh "oc new-app ${dockerImageTag}"
+        sh "oc new-app ${dockerImageTag_app}"
         sh "oc expose svc/${projectName}"
         sh "oc status"
       }
