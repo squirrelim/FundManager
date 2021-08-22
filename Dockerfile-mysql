@@ -2,8 +2,8 @@ FROM mysql:8.0.26
 
 EXPOSE 3306
 
-ENV MYSQL_USER=root
+#ENV MYSQL_USER=root
 ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=manager
+#ENV MYSQL_DATABASE=manager
 
 COPY manager.sql /docker-entrypoint-initdb.d
