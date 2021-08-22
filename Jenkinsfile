@@ -31,7 +31,7 @@ pipeline {
         sh "docker-compose down || echo \"application not running\""
         sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
         sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
-        sh "docker-compose up -d"
+        //sh "docker-compose up -d"
       }
     } 
 
