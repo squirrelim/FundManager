@@ -38,7 +38,7 @@ pipeline {
     stage('Deploy') {
       agent any
       steps {
-        sh "docker-compose down || echo "application not running""
+        sh "docker-compose down || echo \"application not running\""
         sh "docker-compose up"
       }
     } 
