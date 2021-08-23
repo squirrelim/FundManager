@@ -13,7 +13,7 @@ pipeline {
       agent any
       steps {
         sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
-        sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
+        sh "docker build -f Dockerfile-app-local -t ${dockerImageTag_app} ."
       }
     }
 
