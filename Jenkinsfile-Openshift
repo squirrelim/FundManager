@@ -16,6 +16,7 @@ pipeline {
         sh "docker build -f Dockerfile-app-openshift -t ${dockerImageTag_app} ."
         sh "docker tag ${dockerImageTag_mysql} ${dockerImageTag_mysql}"
         sh "docker tag ${dockerImageTag_app} ${dockerImageTag_app}"
+        sh "docker login --username=newbieesun --password=root123456"
         sh "docker push ${dockerImageTag_mysql}"
         sh "docker push ${dockerImageTag_app}"
       }
