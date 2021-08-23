@@ -1,0 +1,55 @@
+def dockerHubName = "newbieesun"
+def projectName = "manager"
+def appName = "${projectName}app"
+def version = "latest"
+def dockerImageTag_app = "${dockerHubName}/${appName}:${version}"
+def mysqlName = "${projectName}mysql"
+def dockerImageTag_mysql = "${dockerHubName}/${mysqlName}:${version}"
+
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      agent any
+      steps {
+        sh "docker build -f Dockerfile-mysql -t ${dockerImageTag_mysql} ."
+        sh "docker build -f Dockerfile-app -t ${dockerImageTag_app} ."
+        sh "docker tag ${dockerImageTag_mysql} ${dockerImageTag_mysql}"
+        sh "docker tag ${dockerImageTag_app} ${dockerImageTag_app}"
+        sh "docker push ${dockerImageTag_mysql}"
+        sh "docker push ${dockerImageTag_app}"
+      }
+    }
+
+    stage('Test') {
+      agent {
+        docker {
+          image 'maven:3.8.1'
+        }
+      }
+      steps {
+        sh "echo \"start testing\""
+        //sh 'mvn test'
+      }
+//      post {
+//        always {
+//          junit 'target/surefire-reports/*.xml'
+//        }
+//      }
+    }
+
+    stage('Deploy Containers to OpenShift') {
+      agent any
+      steps {
+        sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
+        sh "oc project ${projectName} || oc new-project ${projectName}"
+        sh "oc delete all --selector app=${appName} || echo 'Unable to delete all previous openshift resources'"
+        sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
+        sh "oc new-app -e MYSQL_ROOT_PASSWORD=root ${mysqlName}"
+        sh "oc new-app -e spring_datasource_url=jdbc:mysql://managermysql:3306/manager ${appName}"
+        sh "oc expose svc/${appName}"
+        sh "oc status"
+      }
+    }
+  }
+}

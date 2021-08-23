@@ -1,8 +1,10 @@
-def projectName = 'app'
+def dockerHubName = "newbieesun"
+def projectName = "manager"
+def appName = "${projectName}app"
 def version = "latest"
-def dockerImageTag_app = "${projectName}:${version}"
-def mysqlName = 'mysql'
-def dockerImageTag_mysql = "${mysqlName}:${version}"
+def dockerImageTag_app = "${dockerHubName}/${appName}:${version}"
+def mysqlName = "${projectName}mysql"
+def dockerImageTag_mysql = "${dockerHubName}/${mysqlName}:${version}"
 
 pipeline {
   agent any
@@ -37,20 +39,6 @@ pipeline {
       steps {
         sh "docker-compose down || echo \"application not running\""
         sh "docker-compose up"
-      }
-    } 
-
-    stage('Deploy Container to OpenShift') {
-      agent any
-      steps {
-        sh "oc login https://devopsapac34.conygre.com:8443 --username admin --password admin --insecure-skip-tls-verify=true"
-        sh "oc project ${projectName} || oc new-project ${projectName}"
-        sh "oc delete all --selector app=${projectName} || echo 'Unable to delete all previous openshift resources'"
-        sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
-        sh "oc new-app ${dockerImageTag_mysql}"
-        sh "oc new-app ${dockerImageTag_app}"
-        sh "oc expose svc/${projectName}"
-        sh "oc status"
       }
     }
   }
