@@ -38,7 +38,7 @@ pipeline {
       agent any
       steps {
         sh "docker-compose down || echo \"application not running\""
-        sh "docker-compose up"
+        sh "docker-compose up -d"
       }
     }
   }
