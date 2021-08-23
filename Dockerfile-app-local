@@ -2,7 +2,6 @@ FROM openjdk:11.0
 
 COPY target/fundmanager-0.0.1-SNAPSHOT.jar /app.jar
 
-CMD sleep 30 && echo "sleep over" && java -jar -Dspring.profiles.active=prod /app.jar
 #ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
 
 EXPOSE 8080
