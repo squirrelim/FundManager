@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  mysql:
-    container_name: mysql
+  managermysql:
+    container_name: managermysql
     build:
       context: .
       dockerfile: Dockerfile-mysql
@@ -25,11 +25,11 @@ services:
       dockerfile: Dockerfile-app-local
     image: app:latest
     links:
-      - mysql:mysql
+      - managermysql:managermysql
     ports:
     - "8888:8080"
     depends_on:
-      - mysql
+      - managermysql
     command:
       - /bin/sh
       - -c
