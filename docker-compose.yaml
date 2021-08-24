@@ -27,7 +27,7 @@ services:
     links:
       - managermysql:managermysql
     ports:
-    - "8888:8080"
+    - "8080:8080"
     depends_on:
       - managermysql
     command:
