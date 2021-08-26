@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.time.LocalDate;
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:8080")
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Long> {
     @Query("SELECT p FROM Position p WHERE p.securityId=?1 AND p.quantity=?2 AND p.datePurchased=?3")
