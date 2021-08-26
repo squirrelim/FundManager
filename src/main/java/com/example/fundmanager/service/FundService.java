@@ -73,13 +73,12 @@ public class FundService {
         //Update Name
         if(updatedFund.getName() != null &&
         updatedFund.getName().length() > 0){
-            fund.setName(updatedFund.getName());
-        }
 
-        //Update Manager ID
-        if(updatedFund.getEmployeeId() != null &&
-                updatedFund.getEmployeeId() > 0){
-            fund.setEmployeeId(updatedFund.getEmployeeId());
+            Optional<Fund> fundCheck = fundRepository.findFundByName(updatedFund.getName());
+            if(fundCheck.isPresent()){
+                throw new FundAlreadyInUseException(updatedFund);
+            }
+            fund.setName(updatedFund.getName());
         }
     }
 
