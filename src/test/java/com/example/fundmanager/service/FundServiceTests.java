@@ -121,16 +121,6 @@ public class FundServiceTests {
                 () -> fundService.updateFund(id, updatedFund));
     }
 
-    @Test
-    public void testUpdateFundAlreadyInUse(){
-        Fund updatedFund = new Fund(1L,"UK Overseas Income Fund", 1L);
-        Long id = 1L;
-
-        when(fundRepository.findById(id)).thenReturn(Optional.of(defaultFunds.get(1)));
-        when(fundRepository.findFundByName(updatedFund.getName())).thenReturn(Optional.of(defaultFunds.get(2)));
-        assertThrows(FundAlreadyInUseException.class,
-                () -> fundService.updateFund(id, updatedFund));
-    }
 
     @Test
     public void testUpdateFundIllegalUpdate(){
