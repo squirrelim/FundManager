@@ -9,6 +9,17 @@ def dockerImageTag_mysql = "${dockerHubName}/${mysqlName}:${version}"
 pipeline {
   agent any
   stages {
+      stage('Build maven') {
+           agent {
+               docker {
+               image 'maven:3-jdk-11'
+               args '-v /root/.m2:/root/.m2'
+               }
+           }
+           steps {
+               sh 'mvn -B -DskipTests clean package'
+           }
+       }
     stage('Build') {
       agent any
       steps {

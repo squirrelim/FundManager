@@ -1,7 +1,6 @@
-FROM openjdk:11.0
-
-COPY target/fundmanager-0.0.1-SNAPSHOT.jar /app.jar
-
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
+FROM maven:3.8.1-openjdk-11 AS compile
+COPY . /usr/src/mymaven
+WORKDIR /usr/src/mymaven
+RUN mvn -Dmaven.test.skip=true clean package
 
 EXPOSE 8080
