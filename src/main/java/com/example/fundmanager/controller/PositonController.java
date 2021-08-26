@@ -4,14 +4,17 @@ import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.entity.Position;
 import com.example.fundmanager.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/position")
 public class PositonController {
-    
+
     private final PositionService positionService;
 
     @Autowired
@@ -20,27 +23,30 @@ public class PositonController {
     }
 
     @GetMapping
-    public List<Position> getPositions() {
-        return positionService.getPositions();
+    public ResponseEntity<List<Position>> getPositions() {
+        return new ResponseEntity<>(positionService.getPositions(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{PositionId}")
-    public Position getPosition(@PathVariable("PositionId") Long id){
-        return positionService.getPosition(id);
+    public ResponseEntity<Position> getPosition(@PathVariable("PositionId") Long id){
+        return new ResponseEntity<>(positionService.getPosition(id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{PositionId}")
-    public void removePosition(@PathVariable("PositionId") Long id){
+    public ResponseEntity<HttpStatus> removePosition(@PathVariable("PositionId") Long id){
         positionService.removePosition(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping
-    public void addPosition(@RequestBody Position position){
+    public ResponseEntity<HttpStatus> addPosition(@RequestBody Position position){
         positionService.addPosition(position);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(path = "{PositionId}")
-    public void updatePosition(@PathVariable("PositionId") Long id, @RequestBody Position position){
+    public ResponseEntity<HttpStatus> updatePosition(@PathVariable("PositionId") Long id, @RequestBody Position position){
         positionService.updatePosition(id, position);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

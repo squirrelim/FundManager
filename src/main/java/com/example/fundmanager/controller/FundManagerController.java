@@ -4,10 +4,13 @@ import com.example.fundmanager.entity.Fund;
 import com.example.fundmanager.entity.FundManager;
 import com.example.fundmanager.service.FundManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/manager")
 public class FundManagerController {
@@ -20,27 +23,30 @@ public class FundManagerController {
     }
 
     @GetMapping
-    public List<FundManager> getManagers() {
-        return fundManagerService.getManagers();
+    public ResponseEntity<List<FundManager>> getManagers() {
+        return new ResponseEntity<>(fundManagerService.getManagers(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{ManagerId}")
-    public FundManager getManager(@PathVariable("ManagerId") Long id){
-        return fundManagerService.getManager(id);
+    public ResponseEntity<FundManager> getManager(@PathVariable("ManagerId") Long id){
+        return new ResponseEntity<>(fundManagerService.getManager(id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{ManagerId}")
-    public void removeManager(@PathVariable("ManagerId") Long id){
+    public ResponseEntity<HttpStatus> removeManager(@PathVariable("ManagerId") Long id){
         fundManagerService.removeManager(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping
-    public void addManager(@RequestBody FundManager manager){
+    public ResponseEntity<HttpStatus> addManager(@RequestBody FundManager manager){
         fundManagerService.addManager(manager);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(path = "{ManagerId}")
-    public void updateManager(@PathVariable("ManagerId") Long id, @RequestBody FundManager manager){
+    public ResponseEntity<HttpStatus> updateManager(@PathVariable("ManagerId") Long id, @RequestBody FundManager manager){
         fundManagerService.updateManager(id, manager);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
