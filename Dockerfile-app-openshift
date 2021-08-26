@@ -1,9 +1,8 @@
-FROM maven:3.6.3-openjdk-11
-COPY . /usr/src/mymaven
-WORKDIR /usr/src/mymaven
+FROM maven:3.6.3-openjdk-11 AS compile
+
 RUN mvn -Dmaven.test.skip=true clean package
 
-COPY /usr/src/mymaven/target/fundmanager-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=compile target/fundmanager-0.0.1-SNAPSHOT.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
 
