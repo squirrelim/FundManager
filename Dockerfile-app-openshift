@@ -3,4 +3,6 @@ COPY . /usr/src/mymaven
 WORKDIR /usr/src/mymaven
 RUN mvn -Dmaven.test.skip=true clean package
 
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app.jar"]
+
 EXPOSE 8080
