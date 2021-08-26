@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin
 @Repository
 public interface FundRepository extends JpaRepository<Fund, Long> {
     @Query("SELECT f FROM Fund f WHERE f.name=?1")
