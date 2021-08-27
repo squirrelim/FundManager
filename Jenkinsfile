@@ -27,11 +27,11 @@ pipeline {
         sh "echo \"start testing\""
         //sh 'mvn test'
       }
-//      post {
-//        always {
-//          junit 'target/surefire-reports/*.xml'
-//        }
-//      }
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml'
+        }
+      }
     }
     
     stage('Deploy') {
