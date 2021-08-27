@@ -30,13 +30,13 @@ pipeline {
       }
       steps {
         sh "echo \"start testing\""
-        //sh 'mvn test'
+        sh 'mvn test'
       }
-//      post {
-//        always {
-//          junit 'target/surefire-reports/*.xml'
-//        }
-//      }
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml'
+        }
+      }
     }
 
     stage('Deploy Containers to OpenShift') {
@@ -47,6 +47,7 @@ pipeline {
         sh "oc delete all --selector app=${appName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc new-app -e MYSQL_ROOT_PASSWORD=root ${dockerImageTag_mysql}"
+        sh "sleep 20"
         sh "oc new-app -e spring_datasource_url=jdbc:mysql://managermysql:3306/manager ${dockerImageTag_app}"
         sh "oc expose svc/${appName}"
         sh "oc status"
