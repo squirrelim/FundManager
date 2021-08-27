@@ -1,5 +1,5 @@
 def dockerHubName = "newbieesun"
-def projectName = "fundManager"
+def projectName = "fundmanager"
 def appName = "${projectName}app"
 def version = "latest"
 def dockerImageTag_app = "${dockerHubName}/${appName}:${version}"
