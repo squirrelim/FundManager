@@ -48,7 +48,7 @@ pipeline {
         sh "oc delete all --selector app=${mysqlName} || echo 'Unable to delete all previous openshift resources'"
         sh "oc new-app -e MYSQL_ROOT_PASSWORD=root ${dockerImageTag_mysql}"
         sh "sleep 20"
-        sh "oc new-app -e spring_datasource_url=jdbc:mysql://managermysql:3306/manager ${dockerImageTag_app}"
+        sh "oc new-app -e spring_datasource_url=jdbc:mysql://${mysqlName}:3306/manager ${dockerImageTag_app}"
         sh "oc expose svc/${appName}"
         sh "oc status"
       }
