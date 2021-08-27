@@ -1,9 +1,9 @@
 def dockerHubName = "newbieesun"
-def projectName = "manager_"
-def appName = "${projectName}app"
+def projectName = "manager-1"
+def appName = "${projectName}-app"
 def version = "latest"
 def dockerImageTag_app = "${dockerHubName}/${appName}:${version}"
-def mysqlName = "${projectName}mysql"
+def mysqlName = "${projectName}-mysql"
 def dockerImageTag_mysql = "${dockerHubName}/${mysqlName}:${version}"
 
 pipeline {
